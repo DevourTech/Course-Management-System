@@ -1,0 +1,3 @@
+PROJECT = CMS
+
+.PHONY: build
