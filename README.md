@@ -7,31 +7,15 @@
     * Student
     * Instructor
     * Admin
-* Server - REST API 
+* Server - REST API (Spring)
 * On demand communication b/w client & server - HTTP/TCP
 * Real time communication - JMS (Kafka/RabbitMQ/ActiveMQ)
 
-## How to run the project?
+## Running the project
 
-### [Manual] Maven in IntelliJ IDEA
-* Install Maven on your local system
-* Run a maven sync up on the root directory to install all the dependencies
-* To compile, navigate to Maven (rightmost menu option) -> {Project Name} -> Plugins -> compiler -> `compile` target
-* To run, navigate to Maven -> {Project Name} -> Plugins -> javafx -> `run` target
+I am using Maven as the build system for managing dependencies.
 
-### [Manual] Without any build system in IntelliJ IDEA
-* Install a JavaFX distribution and extract it in a particular path
-* Add vm-options to run configurations while executing JavaFX applications
-* Follow [this](https://openjfx.io/openjfx-docs/#install-javafx) link for more details
-
-### Terminal
-
-#### Download dependencies
-```zsh
-make build
-```
-
-#### Run the application
+#### Download dependencies and run the application
 ```zsh
 make 
 ```
