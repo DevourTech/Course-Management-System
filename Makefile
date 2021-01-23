@@ -14,3 +14,8 @@ run: build
 core:
 	@echo "Deploying cms core to local maven repository"
 	@mvn clean install -f core/pom.xml
+
+.PHONY: server
+server: core
+	@echo "Starting Spring Boot Application"
+	@mvn spring-boot:run -f server/pom.xml
