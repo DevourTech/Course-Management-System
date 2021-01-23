@@ -19,3 +19,10 @@ core:
 server: core
 	@echo "Starting Spring Boot Application"
 	@mvn spring-boot:run -f server/pom.xml
+
+.PHONY: test
+test:
+	@echo "Running all the tests of Course Management System"
+	@mvn test
+	@mvn test -f core/pom.xml
+	@mvn test -f server/pom.xml
