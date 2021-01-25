@@ -14,5 +14,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 15.0.1
+      - name: Populate environment variable with java executable
+        run: |
+          echo ::set-output name=JAVA_EXEC::$(which java)
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots verify -s settings.xml
+        env:
+          GITHUB_USERNAME: rohan23chhabra
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_EXEC: ${{ env.JAVA_EXEC }}
