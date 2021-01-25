@@ -1,21 +1,16 @@
 .DEFAULT_GOAL := run
 
 .PHONY: build
-build: core
+build:
 	@echo "Installing dependencies...."
-	@mvn clean install
+	@mvn install -s settings.xml
 
 .PHONY: run
 run: build
 	@echo "Running Course Management System...."
-	@mvn clean javafx:run
+	@mvn javafx:run
 
-.PHONY: core
-core:
-	@echo "Deploying cms core to local maven repository"
-	@mvn clean install -f core/pom.xml
-
-.PHONY: server
-server: core
-	@echo "Starting Spring Boot Application"
-	@mvn spring-boot:run -f server/pom.xml
+.PHONY: test
+test: build
+	@echo "Running all the tests of Course Management System"
+	@mvn test
