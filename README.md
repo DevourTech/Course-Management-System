@@ -40,7 +40,15 @@ Otherwise, you might face a tough time :P
 
 ## Running the project
 
+### Using Maven
 Just a simple command is enough to launch the JavaFX Application
 ```zsh
 make 
 ```
+
+### Using IntelliJ
+I know a lot of folks love IntelliJ (including me), therefore
+it makes sense to setup Intellij with the JavaFX distribution.
+
+[This link](https://openjfx.io/openjfx-docs/) conveys information to setup JavaFX via various configurations.
+Go to `JavaFX and IntelliJ` > `Non-modular from IDE` to setup JavaFX on IntelliJ.
