@@ -9,6 +9,9 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="733.0" prefWidth="1188.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cms.client.RootController">
+   <fx:define>
+      <fx:include fx:id="userPopup" source="user-popup.fxml" />
+   </fx:define>
    <children>
       <VBox prefHeight="733.0" prefWidth="278.0" style="-fx-background-color: #361c57;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -31,7 +34,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="HOME" />
                </graphic>
             </Button>
-            <Button layoutX="10.0" layoutY="210.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Courses" textFill="WHITE">
+            <Button layoutX="10.0" layoutY="210.0" mnemonicParsing="false" onAction="#coursesButtonAction" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Courses" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="BOOK" />
                </graphic>
@@ -48,5 +51,11 @@
             </Button>
          </children>
       </VBox>
+      <AnchorPane fx:id="primaryStageBody" layoutX="278.0" layoutY="-1.0" prefHeight="741.0" prefWidth="836.0" />
+      <AnchorPane fx:id="iconPane" layoutX="1132.0" layoutY="-1.0" prefHeight="61.0" prefWidth="56.0">
+         <children>
+            <FontAwesomeIconView glyphName="USER" layoutX="25.0" layoutY="42.0" onMouseEntered="#showUserPopup" onMouseExited="#hideUserPopup" wrappingWidth="34.51000213623047" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
