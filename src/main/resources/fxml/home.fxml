@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="741.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cms.client.HomeController">
+   <children>
+      <Label layoutX="76.0" layoutY="119.0" prefHeight="65.0" prefWidth="433.0" text="Howdy, Rohan" textFill="#361c57">
+         <font>
+            <Font name="Noto Sans CJK JP Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="680.0" layoutY="119.0" prefHeight="65.0" prefWidth="128.0" text="Student, CSE">
+         <font>
+            <Font name="Noto Sans CJK JP Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="76.0" layoutY="301.0" prefHeight="48.0" prefWidth="407.0" text="You have new notifications">
+         <font>
+            <Font name="Noto Sans CJK JP Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="76.0" layoutY="229.0" prefHeight="48.0" prefWidth="465.0" text="You have pending assignments">
+         <font>
+            <Font name="Noto Sans CJK JP Bold" size="30.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

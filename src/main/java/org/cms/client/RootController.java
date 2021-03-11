@@ -6,35 +6,42 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import org.controlsfx.control.PopOver;
 
 public class RootController implements Initializable {
 
 	public AnchorPane iconPane;
 	public VBox userPopup;
 	public AnchorPane primaryStageBody;
-	private PopOver popOver;
+	private Parent coursesView;
+	private Parent homeView;
 
 	public static final String COURSES_TABLE_VIEW = "/fxml/course-table.fxml";
+	public static final String HOME_VIEW = "/fxml/home.fxml";
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		popOver = new PopOver(userPopup);
+		try {
+			initViews();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		primaryStageBody.getChildren().setAll(homeView);
 	}
 
-	public void showUserPopup(MouseEvent mouseEvent) {
-		popOver.show(iconPane, 10.0D);
+	private void initViews() throws IOException {
+		coursesView = FXMLLoader.load(getClass().getResource(COURSES_TABLE_VIEW));
+		homeView = FXMLLoader.load(getClass().getResource(HOME_VIEW));
 	}
 
-	public void hideUserPopup(MouseEvent mouseEvent) {
-		popOver.hide();
+	public void coursesButtonAction(ActionEvent actionEvent) {
+		primaryStageBody.getChildren().setAll(coursesView);
 	}
 
-	public void coursesButtonAction(ActionEvent actionEvent) throws IOException {
-		primaryStageBody.getChildren().removeAll();
-		primaryStageBody.getChildren().add(FXMLLoader.load(getClass().getResource(COURSES_TABLE_VIEW)));
+	public void homeButtonAction(ActionEvent actionEvent) {
+		primaryStageBody.getChildren().setAll(homeView);
 	}
 }
