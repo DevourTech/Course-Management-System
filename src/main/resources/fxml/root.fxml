@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="733.0" prefWidth="1188.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cms.client.RootController">
+   <fx:define>
+      <fx:include fx:id="userPopup" source="user-popup.fxml" />
+   </fx:define>
+   <children>
+      <Label alignment="CENTER" layoutX="277.0" prefHeight="148.0" prefWidth="912.0" stylesheets="@../css/main.css" text="Course Management System" textFill="#361c57">
+         <font>
+            <Font name="Noto Sans CJK JP Bold" size="36.0" />
+         </font>
+      </Label>
+      <VBox prefHeight="733.0" prefWidth="278.0" style="-fx-background-color: #361c57;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label id="logo" layoutX="111.0" layoutY="30.0" stylesheets="@../css/main.css" text="CMS" textFill="WHITE" />
+                  <Label layoutX="60.0" layoutY="85.0" prefHeight="30.0" prefWidth="153.0" text="Built with love by " textFill="WHITE">
+                     <font>
+                        <Font name="Ubuntu Mono" size="16.0" />
+                     </font></Label>
+                  <Label layoutX="74.0" layoutY="115.0" prefHeight="18.0" prefWidth="129.0" text="Rohan and Archit" textFill="WHITE">
+                  <font>
+                     <Font name="Ubuntu Mono" size="16.0" />
+                  </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button mnemonicParsing="false" onAction="#homeButtonAction" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Home" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="HOME" />
+               </graphic>
+            </Button>
+            <Button layoutX="10.0" layoutY="210.0" mnemonicParsing="false" onAction="#coursesButtonAction" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Courses" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="BOOK" />
+               </graphic>
+            </Button>
+            <Button layoutX="10.0" layoutY="271.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Assignments" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="COPY" />
+               </graphic>
+            </Button>
+            <Button layoutX="10.0" layoutY="332.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Notifications" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="BELL" />
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <AnchorPane fx:id="primaryStageBody" layoutX="278.0" layoutY="-1.0" prefHeight="741.0" prefWidth="912.0" />
+   </children>
+</AnchorPane>
