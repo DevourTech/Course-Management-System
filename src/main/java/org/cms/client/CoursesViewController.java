@@ -30,15 +30,15 @@ public class CoursesViewController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		courses = FXCollections.observableArrayList();
-		courses.add(new Course(1, "Networking", "Lmao"));
-		courses.add(new Course(2, "OS", "Well okay!"));
-		courses.add(new Course(3, "DBMS", "Fatt gyi"));
-		courses.add(new Course(4, "Operations Research", "Lmao"));
-		courses.add(new Course(5, "Latex", "LOL"));
-		courses.add(new Course(6, "Formal methods", "Fatt gyi seriously"));
-		courses.add(new Course(7, "DS", "Pro"));
-		courses.add(new Course(8, "Algos", "Pro ++"));
-		courses.add(new Course(9, "Shell scripting", "Okay"));
+		courses.add(new Course("1", "Networking", "Lmao"));
+		courses.add(new Course("2", "OS", "Well okay!"));
+		courses.add(new Course("3", "DBMS", "Fatt gyi"));
+		courses.add(new Course("4", "Operations Research", "Lmao"));
+		courses.add(new Course("5", "Latex", "LOL"));
+		courses.add(new Course("6", "Formal methods", "Fatt gyi seriously"));
+		courses.add(new Course("7", "DS", "Pro"));
+		courses.add(new Course("8", "Algos", "Pro ++"));
+		courses.add(new Course("9", "Shell scripting", "Okay"));
 
 		coursesTable.setItems(courses);
 
@@ -74,7 +74,7 @@ public class CoursesViewController implements Initializable {
 		}
 
 		String filter = filterText.toLowerCase();
-		if (Integer.toString(course.getId()).contains(filter)) {
+		if (course.getId().contains(filter)) {
 			return true;
 		}
 
@@ -105,7 +105,7 @@ public class CoursesViewController implements Initializable {
 					return false;
 				}
 				Course c = selectedRows.get(0);
-				return (c.getId() % 2 == 1);
+				return (Integer.parseInt(c.getId()) % 2 == 1);
 			}
 		};
 	}
