@@ -30,20 +30,21 @@ public class CoursesViewController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		courses = FXCollections.observableArrayList();
-		courses.add(new Course("1", "Networking", "Lmao"));
-		courses.add(new Course("2", "OS", "Well okay!"));
-		courses.add(new Course("3", "DBMS", "Fatt gyi"));
-		courses.add(new Course("4", "Operations Research", "Lmao"));
-		courses.add(new Course("5", "Latex", "LOL"));
-		courses.add(new Course("6", "Formal methods", "Fatt gyi seriously"));
-		courses.add(new Course("7", "DS", "Pro"));
-		courses.add(new Course("8", "Algos", "Pro ++"));
-		courses.add(new Course("9", "Shell scripting", "Okay"));
+		courses.add(new Course("1", "Networking", "CSE", "Lmao"));
+		courses.add(new Course("2", "OS", "CSE", "Well okay!"));
+		courses.add(new Course("3", "DBMS", "CSE", "Fatt gyi"));
+		courses.add(new Course("4", "Operations Research", "CSE", "Lmao"));
+		courses.add(new Course("5", "Latex", "CSE", "LOL"));
+		courses.add(new Course("6", "Formal methods", "CSE", "Fatt gyi seriously"));
+		courses.add(new Course("7", "DS", "CSE", "Pro"));
+		courses.add(new Course("8", "Algos", "CSE", "Pro ++"));
+		courses.add(new Course("9", "Shell scripting", "CSE", "Okay"));
 
 		coursesTable.setItems(courses);
 
 		courseIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 		courseNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		courseBranchColumn.setCellValueFactory(new PropertyValueFactory<>("branch"));
 		courseDescColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
 		bindDisablePropertyForSubscribeButton();
@@ -79,6 +80,10 @@ public class CoursesViewController implements Initializable {
 		}
 
 		if (course.getName().toLowerCase().contains(filter)) {
+			return true;
+		}
+
+		if (course.getBranch().toLowerCase().contains(filter)) {
 			return true;
 		}
 
