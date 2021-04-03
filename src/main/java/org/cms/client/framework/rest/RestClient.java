@@ -1,3 +1,10 @@
 package org.cms.client.framework.rest;
 
-public interface RestClient {}
+import org.cms.core.course.Course;
+
+import java.util.List;
+
+public interface RestClient {
+	List<Course> getAllCourses();
+	//void subscribe(User user, Course course);
+}

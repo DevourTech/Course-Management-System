@@ -1,11 +1,11 @@
 package org.cms.client.framework.session;
 
-import org.cms.core.student.Student;
-
 public class Session {
 
-	int id;
-	String passwd;
+	String userId;
+	String userPassword;
+	String userType;
+
 	public static final Session session = new Session();
 
 	private Session() {}
@@ -15,24 +15,35 @@ public class Session {
 		return session;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUserId(String id) {
+		this.userId = id;
 	}
 
-	public int getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public String getPasswd() {
-		return passwd;
+	public String getUserPassword() {
+		return userPassword;
 	}
 
-	public void setPasswd(String passwd) {
-		this.passwd = passwd;
+	public void setUserPassword(String passwd) {
+		this.userPassword = passwd;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	@Override
 	public String toString() {
-		return "Session{" + "id=" + id + ", passwd='" + passwd + '\'' + '}';
+		return "Session{" +
+				"userId='" + userId + '\'' +
+				", userType='" + userType + '\'' +
+				'}';
 	}
 }
