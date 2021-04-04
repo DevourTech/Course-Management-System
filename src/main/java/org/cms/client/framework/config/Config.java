@@ -13,6 +13,7 @@ public class Config {
 	public static final String CMS_HOST = "cms.host";
 	public static final String CMS_API_PATH = "cms.api.path";
 	public static final String STAGE_TITLE = "stage.title";
+	public static final String BCRYPT_ROUNDS = "bcrypt.rounds";
 
 	public static final Logger logger = LoggerFactory.getLogger(Config.class.getName());
 	private static Properties configuration;

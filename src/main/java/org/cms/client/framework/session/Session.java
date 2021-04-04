@@ -1,12 +1,16 @@
 package org.cms.client.framework.session;
 
+import org.cms.client.framework.rest.RestClient;
+import org.cms.client.framework.rest.RestClientImpl;
+
 public class Session {
 
-	String userId;
-	String userPassword;
-	String userType;
+	private String userId;
+	private String userPassword;
+	private String userType;
 
 	public static final Session session = new Session();
+	private RestClient restClient;
 
 	private Session() {}
 
@@ -39,11 +43,19 @@ public class Session {
 		this.userType = userType;
 	}
 
+	public RestClient getRestClient() {
+		return restClient;
+	}
+
+	public void initialize(String hostName, String userId, String password, String userType) {
+		session.setUserId(userId);
+		session.setUserPassword(password);
+		session.setUserType(userType);
+		restClient = new RestClientImpl(hostName, userId, password, userType);
+	}
+
 	@Override
 	public String toString() {
-		return "Session{" +
-				"userId='" + userId + '\'' +
-				", userType='" + userType + '\'' +
-				'}';
+		return "Session{" + "userId='" + userId + '\'' + ", userType='" + userType + '\'' + '}';
 	}
 }
