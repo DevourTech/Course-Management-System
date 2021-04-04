@@ -12,10 +12,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import okhttp3.*;
 import org.cms.client.framework.config.Config;
 import org.cms.client.framework.globals.Globals;
-import org.cms.client.framework.security.PasswordEncoder;
 import org.cms.client.framework.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +31,6 @@ public class LoginController implements Initializable {
 	private static final Session session = Session.getInstance();
 	private final ToggleGroup toggleGroup = new ToggleGroup();
 
-	private static final OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().followRedirects(false);
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Override
@@ -57,6 +54,7 @@ public class LoginController implements Initializable {
 			return;
 		}
 		logger.info("Auth success");
+
 		Globals.getStage().getScene().setRoot(mainView);
 	}
 
@@ -68,14 +66,7 @@ public class LoginController implements Initializable {
 		String hostName = extractHostNameFromConfig();
 		RadioButton selectedRadio = (RadioButton) toggleGroup.getSelectedToggle();
 		String userType = selectedRadio.getText().toLowerCase();
-		String password = encodePassword(passwordField.getText());
-		session.initialize(hostName, usernameField.getText(), password, userType);
+		session.initialize(hostName, usernameField.getText(), passwordField.getText(), userType);
 		logger.info("Session initialized successfully");
-	}
-
-	private String encodePassword(String password) {
-		int rounds = Integer.parseInt(Config.get(Config.BCRYPT_ROUNDS));
-		PasswordEncoder passwordEncoder = new PasswordEncoder(rounds);
-		return passwordEncoder.hashPassword(password);
 	}
 }

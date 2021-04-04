@@ -1,7 +1,9 @@
 package org.cms.client;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.cms.client.framework.session.Session;
 import org.cms.core.course.Course;
 
 public class CoursesViewController implements Initializable {
@@ -25,20 +28,18 @@ public class CoursesViewController implements Initializable {
 	public Button subscribeButton;
 	public TextField filterField;
 
-	private ObservableList<Course> courses;
+	private ObservableList<Course> courses, studentCourses;
+	private static final Session session = Session.getInstance();
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		courses = FXCollections.observableArrayList();
-		courses.add(new Course("1", "Networking", "CSE", "Lmao"));
-		courses.add(new Course("2", "OS", "CSE", "Well okay!"));
-		courses.add(new Course("3", "DBMS", "CSE", "Fatt gyi"));
-		courses.add(new Course("4", "Operations Research", "CSE", "Lmao"));
-		courses.add(new Course("5", "Latex", "CSE", "LOL"));
-		courses.add(new Course("6", "Formal methods", "CSE", "Fatt gyi seriously"));
-		courses.add(new Course("7", "DS", "CSE", "Pro"));
-		courses.add(new Course("8", "Algos", "CSE", "Pro ++"));
-		courses.add(new Course("9", "Shell scripting", "CSE", "Okay"));
+		try {
+			CompletableFuture<List<Course>> futureCourseList = session.getRestClient().getAllCourses();
+			List<Course> courseList = futureCourseList.get();
+			courses = FXCollections.observableArrayList(courseList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		coursesTable.setItems(courses);
 
@@ -57,11 +58,7 @@ public class CoursesViewController implements Initializable {
 			.textProperty()
 			.addListener(
 				(observable, oldValue, newValue) -> {
-					filteredList.setPredicate(
-						course -> {
-							return filterColumnsBasedOnPredicate(newValue, course);
-						}
-					);
+					filteredList.setPredicate(course -> filterColumnsBasedOnPredicate(newValue, course));
 				}
 			);
 		SortedList<Course> sortedList = new SortedList<>(filteredList);
@@ -110,7 +107,7 @@ public class CoursesViewController implements Initializable {
 					return false;
 				}
 				Course c = selectedRows.get(0);
-				return (Integer.parseInt(c.getId()) % 2 == 1);
+				return courses.contains(c);
 			}
 		};
 	}
