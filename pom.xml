@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.cms</groupId>
             <artifactId>core</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>1.1.2</version>
         </dependency>
 
         <dependency>
@@ -80,20 +80,6 @@
             <artifactId>controlsfx</artifactId>
             <version>11.1.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.9.1</version>
-        </dependency>
-
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/junit/junit &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>junit</groupId>-->
-<!--            <artifactId>junit</artifactId>-->
-<!--            <version>4.13.2</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>com.jsoniter</groupId>

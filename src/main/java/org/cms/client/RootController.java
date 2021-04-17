@@ -33,11 +33,13 @@ public class RootController implements Initializable {
 	}
 
 	private void initViews() throws IOException {
-		coursesView = FXMLLoader.load(getClass().getResource(COURSES_TABLE_VIEW));
 		homeView = FXMLLoader.load(getClass().getResource(HOME_VIEW));
 	}
 
-	public void coursesButtonAction(ActionEvent actionEvent) {
+	public void coursesButtonAction(ActionEvent actionEvent) throws IOException {
+		if (coursesView == null) {
+			coursesView = FXMLLoader.load(getClass().getResource(COURSES_TABLE_VIEW));
+		}
 		primaryStageBody.getChildren().setAll(coursesView);
 	}
 

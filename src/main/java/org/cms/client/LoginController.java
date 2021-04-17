@@ -1,6 +1,9 @@
 package org.cms.client;
 
 import com.jfoenix.controls.JFXRadioButton;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,16 +12,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import okhttp3.*;
 import org.cms.client.framework.config.Config;
 import org.cms.client.framework.globals.Globals;
 import org.cms.client.framework.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
@@ -33,7 +31,6 @@ public class LoginController implements Initializable {
 	private static final Session session = Session.getInstance();
 	private final ToggleGroup toggleGroup = new ToggleGroup();
 
-	private static final OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().followRedirects(false);
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Override
@@ -48,41 +45,28 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	public void loginOnAction(ActionEvent actionEvent) throws IOException {
-		session.setUserId(usernameField.getText());
-		session.setUserPassword(passwordField.getText());
-		RadioButton selectedRadio = (RadioButton) toggleGroup.getSelectedToggle();
-		String userType = selectedRadio.getText().toLowerCase();
-		session.setUserType(userType);
-		boolean authStatus = authenticateCredentials();
+	public void loginOnAction(ActionEvent actionEvent) throws Exception {
+		initializeSession();
+		boolean authStatus = session.getRestClient().authenticate();
 		if (!authStatus) {
 			logger.error("Authentication failed");
 			// TODO: Coloring of text fields......validity
 			return;
 		}
 		logger.info("Auth success");
+
 		Globals.getStage().getScene().setRoot(mainView);
 	}
 
-	private boolean authenticateCredentials() throws IOException {
-		clientBuilder.authenticator((route, response) -> {
-			String credential = Credentials.basic(session.getUserId(), session.getUserPassword());
-			return response.request().newBuilder().header("Authorization", credential).build();
-		});
-
-		OkHttpClient client = clientBuilder.build();
-		Request request = new Request.Builder()
-				.url(getAuthURL())
-				.build();
-		Call call = client.newCall(request);
-		Response response = call.execute();
-		return response.code() == 200;
+	private String extractHostNameFromConfig() {
+		return Config.get(Config.CMS_HOST);
 	}
 
-	private String getAuthURL() {
-		String BASE_URL = Config.get(Config.CMS_HOST) + Config.get(Config.CMS_API_PATH);
-		String authURL = BASE_URL + "/" + session.getUserType() + "s" + "/" + session.getUserId();
-		System.out.println(authURL);
-		return authURL;
+	private void initializeSession() {
+		String hostName = extractHostNameFromConfig();
+		RadioButton selectedRadio = (RadioButton) toggleGroup.getSelectedToggle();
+		String userType = selectedRadio.getText().toLowerCase();
+		session.initialize(hostName, usernameField.getText(), passwordField.getText(), userType);
+		logger.info("Session initialized successfully");
 	}
 }
