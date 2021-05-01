@@ -54,6 +54,11 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="BELL" />
                </graphic>
             </Button>
+            <Button mnemonicParsing="false" onAction="#manageButtonAction" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Manage" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="CERTIFICATE" />
+               </graphic>
+            </Button>
          </children>
       </VBox>
       <AnchorPane fx:id="primaryStageBody" layoutX="278.0" layoutY="-1.0" prefHeight="741.0" prefWidth="912.0" />

@@ -15,11 +15,11 @@ public class RootController implements Initializable {
 	public AnchorPane iconPane;
 	public VBox userPopup;
 	public AnchorPane primaryStageBody;
-	private Parent coursesView;
-	private Parent homeView;
+	private Parent coursesView, homeView, adminView;
 
 	public static final String COURSES_TABLE_VIEW = "/fxml/course-table.fxml";
 	public static final String HOME_VIEW = "/fxml/home.fxml";
+	public static final String ADMIN_VIEW = "/fxml/admin.fxml";
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -34,6 +34,7 @@ public class RootController implements Initializable {
 
 	private void initViews() throws IOException {
 		homeView = FXMLLoader.load(getClass().getResource(HOME_VIEW));
+		adminView = FXMLLoader.load(getClass().getResource(ADMIN_VIEW));
 	}
 
 	public void coursesButtonAction(ActionEvent actionEvent) throws IOException {
@@ -45,5 +46,9 @@ public class RootController implements Initializable {
 
 	public void homeButtonAction(ActionEvent actionEvent) {
 		primaryStageBody.getChildren().setAll(homeView);
+	}
+
+	public void manageButtonAction(ActionEvent actionEvent) throws IOException {
+		primaryStageBody.getChildren().setAll(adminView);
 	}
 }

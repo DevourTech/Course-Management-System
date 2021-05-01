@@ -9,7 +9,7 @@ public class Session {
 	private String userPassword;
 	private String userType;
 
-	public static final Session session = new Session();
+	private static final Session session = new Session();
 	private RestClient restClient;
 
 	private Session() {}
