@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import org.cms.client.framework.globals.Constants;
 import org.cms.core.course.Course;
 import org.cms.core.http.IdResponse;
 import org.cms.core.instructor.Instructor;
@@ -53,7 +54,7 @@ public class RestClientImpl implements RestClient {
 
 	//for get courses
 	@Override
-	public CompletableFuture<List<Course>> getAllCourses() throws Exception {
+	public CompletableFuture<List<Course>> getAllCourses() throws URISyntaxException {
 		String path = "/api/courses";
 		HttpRequest request = HttpRequest.newBuilder().uri(new URI(hostName + path)).GET().build();
 
@@ -74,8 +75,12 @@ public class RestClientImpl implements RestClient {
 	}
 
 	@Override
-	public CompletableFuture<List<Course>> getCoursesForStudent(String studentId) throws URISyntaxException {
-		String path = "/api/students/" + studentId + "/courses";
+	public CompletableFuture<List<Course>> getCoursesForUser(String userId) throws URISyntaxException {
+		if (userType.equalsIgnoreCase(Constants.ADMIN)) {
+			return null;
+		}
+
+		String path = "/api/" + userType.toLowerCase() + "s/" + userId + "/courses";
 		HttpRequest request = HttpRequest.newBuilder().uri(new URI(hostName + path)).GET().build();
 
 		return httpClient
@@ -118,5 +123,13 @@ public class RestClientImpl implements RestClient {
 		String path = "/api/courses";
 		String requestBody = JsonStream.serialize(course);
 		return createResource(path, requestBody);
+	}
+
+	@Override
+	public CompletableFuture<String> subscribe(String userId, String courseId) throws URISyntaxException {
+		String path = "/api/" + userType.toLowerCase() + "s/" + userId + "/courses/" + courseId;
+		HttpRequest request = HttpRequest.newBuilder().uri(new URI(hostName + path)).PUT(HttpRequest.BodyPublishers.noBody()).build();
+
+		return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body);
 	}
 }

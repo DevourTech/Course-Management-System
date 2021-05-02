@@ -1,4 +1,4 @@
-package org.cms.client;
+package org.cms.client.controllers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,10 +12,11 @@ import javafx.scene.layout.VBox;
 
 public class RootController implements Initializable {
 
-	public AnchorPane iconPane;
 	public VBox userPopup;
 	public AnchorPane primaryStageBody;
 	private Parent coursesView, homeView, adminView;
+
+	private FXMLLoader homeViewLoader;
 
 	public static final String COURSES_TABLE_VIEW = "/fxml/course-table.fxml";
 	public static final String HOME_VIEW = "/fxml/home.fxml";
@@ -33,7 +34,8 @@ public class RootController implements Initializable {
 	}
 
 	private void initViews() throws IOException {
-		homeView = FXMLLoader.load(getClass().getResource(HOME_VIEW));
+		homeViewLoader = new FXMLLoader(getClass().getResource(HOME_VIEW));
+		homeView = homeViewLoader.load();
 		adminView = FXMLLoader.load(getClass().getResource(ADMIN_VIEW));
 	}
 
@@ -44,11 +46,15 @@ public class RootController implements Initializable {
 		primaryStageBody.getChildren().setAll(coursesView);
 	}
 
-	public void homeButtonAction(ActionEvent actionEvent) {
+	public void homeButtonAction(ActionEvent actionEvent) throws IOException {
 		primaryStageBody.getChildren().setAll(homeView);
 	}
 
 	public void manageButtonAction(ActionEvent actionEvent) throws IOException {
 		primaryStageBody.getChildren().setAll(adminView);
+	}
+
+	public HomeController getHomeController() {
+		return homeViewLoader.getController();
 	}
 }
