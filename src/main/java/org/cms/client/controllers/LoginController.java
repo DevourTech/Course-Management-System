@@ -1,4 +1,4 @@
-package org.cms.client;
+package org.cms.client.controllers;
 
 import com.jfoenix.controls.JFXRadioButton;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
 import org.cms.client.framework.config.Config;
 import org.cms.client.framework.globals.Globals;
 import org.cms.client.framework.session.Session;
@@ -26,6 +27,8 @@ public class LoginController implements Initializable {
 	public JFXRadioButton studentRadio;
 	public JFXRadioButton instructorRadio;
 	public JFXRadioButton adminRadio;
+
+	private FXMLLoader mainViewLoader;
 	private Parent mainView;
 
 	private static final Session session = Session.getInstance();
@@ -36,7 +39,8 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		try {
-			mainView = FXMLLoader.load(getClass().getResource(ROOT_LAYOUT));
+			mainViewLoader = new FXMLLoader(getClass().getResource(ROOT_LAYOUT));
+			mainView = mainViewLoader.load();
 			studentRadio.setToggleGroup(toggleGroup);
 			instructorRadio.setToggleGroup(toggleGroup);
 			adminRadio.setToggleGroup(toggleGroup);
@@ -55,7 +59,17 @@ public class LoginController implements Initializable {
 		}
 		logger.info("Auth success");
 
-		Globals.getStage().getScene().setRoot(mainView);
+		updateUIAfterSuccessfulLogin();
+	}
+
+	private void updateUIAfterSuccessfulLogin() {
+		Stage mainStage = Globals.getStage();
+		mainStage.getScene().setRoot(mainView);
+		mainStage.setHeight(800);
+		mainStage.setWidth(1200);
+
+		RootController rootController = mainViewLoader.getController();
+		rootController.getHomeController().populateCoursesTable();
 	}
 
 	private String extractHostNameFromConfig() {

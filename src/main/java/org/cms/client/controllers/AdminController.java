@@ -1,4 +1,4 @@
-package org.cms.client;
+package org.cms.client.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;

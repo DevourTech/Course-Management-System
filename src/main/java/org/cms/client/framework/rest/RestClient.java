@@ -10,11 +10,11 @@ import org.cms.core.instructor.Instructor;
 import org.cms.core.student.Student;
 
 public interface RestClient {
-	CompletableFuture<List<Course>> getAllCourses() throws Exception;
+	CompletableFuture<List<Course>> getAllCourses() throws URISyntaxException;
 	boolean authenticate() throws Exception;
-	CompletableFuture<List<Course>> getCoursesForStudent(String studentId) throws URISyntaxException;
+	CompletableFuture<List<Course>> getCoursesForUser(String userId) throws URISyntaxException;
 	CompletableFuture<IdResponse> createStudent(Student student) throws URISyntaxException;
 	CompletableFuture<IdResponse> createInstructor(Instructor instructor) throws URISyntaxException;
-
 	CompletableFuture<IdResponse> createCourse(Course course) throws URISyntaxException;
+	CompletableFuture<String> subscribe(String userId, String courseId) throws URISyntaxException;
 }

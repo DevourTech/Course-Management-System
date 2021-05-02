@@ -1,4 +1,4 @@
-package org.cms.client;
+package org.cms.client.controllers;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
