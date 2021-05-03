@@ -27,7 +27,7 @@ public class CoursesViewController implements Initializable {
 	public TableColumn<Course, String> courseBranchColumn;
 	public Button subscribeButton;
 	public TextField filterField;
-	public Label subscribeCourseStatus;
+	public Label courseStatus;
 
 	private ObservableList<Course> courses;
 	private static final Session session = Session.getInstance();
@@ -81,9 +81,22 @@ public class CoursesViewController implements Initializable {
 		CompletableFuture<String> future = session.getRestClient().subscribe(session.getUserId(), courseTobeSubscribed.getId());
 		String response = future.get();
 		logger.info("Subscribe response - " + response);
-		subscribeCourseStatus.setText(response);
+		courseStatus.setText(response);
 
 		session.addCourseToSubscribeList(courseTobeSubscribed);
 		coursesTable.getSelectionModel().clearSelection();
 	}
+
+    public void unsubscribeButtonOnAction(ActionEvent actionEvent) throws ExecutionException, InterruptedException, URISyntaxException {
+		ObservableList<Course> selectedRows = coursesTable.getSelectionModel().getSelectedItems();
+		Course courseTobeUnsubscribed = selectedRows.get(0);
+
+		CompletableFuture<String> future = session.getRestClient().unsubscribe(session.getUserId(), courseTobeUnsubscribed.getId());
+		String response = future.get();
+		logger.info("Unsubscribe response - " + response);
+		courseStatus.setText(response);
+
+		session.removeCourseFromSubscribedList(courseTobeUnsubscribed);
+		coursesTable.getSelectionModel().clearSelection();
+    }
 }
