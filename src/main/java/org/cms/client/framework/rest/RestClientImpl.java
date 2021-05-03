@@ -132,4 +132,12 @@ public class RestClientImpl implements RestClient {
 
 		return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body);
 	}
+
+	@Override
+	public CompletableFuture<String> unsubscribe(String userId, String courseId) throws URISyntaxException {
+		String path = "/api/" + userType.toLowerCase() + "s/" + userId + "/courses/" + courseId;
+		HttpRequest request = HttpRequest.newBuilder().uri(new URI(hostName + path)).DELETE().build();
+
+		return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body);
+	}
 }

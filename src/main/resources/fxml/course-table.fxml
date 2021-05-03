@@ -40,14 +40,11 @@
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="376.0" spacing="10.0" GridPane.rowIndex="1">
                <children>
-                  <Pane prefHeight="57.0" prefWidth="183.0" />
+                  <Pane prefHeight="46.0" prefWidth="78.0" />
                   <FontAwesomeIconView glyphName="SEARCH" />
                   <TextField fx:id="filterField" prefHeight="36.0" prefWidth="309.0" style="-fx-border-color: #3f2b63;" />
-                  <Button fx:id="subscribeButton" graphicTextGap="10.0" mnemonicParsing="false" onAction="#subscribeButtonOnAction" prefHeight="31.0" prefWidth="164.0" stylesheets="@../css/main.css" text="Subscribe" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" />
-                     </graphic>
-                  </Button>
+                  <Button fx:id="subscribeButton" graphicTextGap="10.0" mnemonicParsing="false" onAction="#subscribeButtonOnAction" prefHeight="31.0" prefWidth="148.0" stylesheets="@../css/main.css" text="Subscribe" textFill="WHITE" />
+                  <Button fx:id="unsubscribeButton" graphicTextGap="10.0" mnemonicParsing="false" onAction="#unsubscribeButtonOnAction" prefHeight="31.0" prefWidth="148.0" stylesheets="@../css/main.css" text="Unsubscribe" textFill="WHITE" />
                </children>
             </HBox>
             <Label prefHeight="47.0" prefWidth="160.0" text="List of Courses" textFill="#361c57">
@@ -55,7 +52,7 @@
                   <Font name="Noto Sans CJK JP Bold" size="22.0" />
                </font>
             </Label>
-            <Label fx:id="subscribeCourseStatus" prefHeight="45.0" prefWidth="844.0" textFill="#361c57" GridPane.rowIndex="3">
+            <Label fx:id="courseStatus" prefHeight="45.0" prefWidth="844.0" textFill="#361c57" GridPane.rowIndex="3">
                <font>
                   <Font name="Noto Sans CJK JP Bold" size="22.0" />
                </font>

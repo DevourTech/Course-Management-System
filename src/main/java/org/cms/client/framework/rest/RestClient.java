@@ -17,4 +17,5 @@ public interface RestClient {
 	CompletableFuture<IdResponse> createInstructor(Instructor instructor) throws URISyntaxException;
 	CompletableFuture<IdResponse> createCourse(Course course) throws URISyntaxException;
 	CompletableFuture<String> subscribe(String userId, String courseId) throws URISyntaxException;
+	CompletableFuture<String> unsubscribe(String userId, String courseId) throws URISyntaxException;
 }

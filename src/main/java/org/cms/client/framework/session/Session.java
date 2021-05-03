@@ -77,6 +77,11 @@ public class Session {
 		isSubscribed.put(c.getId(), true);
 	}
 
+	public void removeCourseFromSubscribedList(Course c) {
+		subscribedCourses.removeIf(course -> course.getId().equals(c.getId()));
+		isSubscribed.put(c.getId(), false);
+	}
+
 	public void initialize(String hostName, String userId, String password, String userType) {
 		session.setUserId(userId);
 		session.setUserPassword(password);
