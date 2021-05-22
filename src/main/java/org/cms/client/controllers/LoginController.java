@@ -2,6 +2,7 @@ package org.cms.client.controllers;
 
 import com.jfoenix.controls.JFXRadioButton;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -13,11 +14,14 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cms.client.framework.config.Config;
 import org.cms.client.framework.globals.Globals;
-import org.cms.client.framework.session.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.cms.client.framework.service.Service;
+import org.cms.client.framework.service.ServiceConfig;
+import org.cms.client.framework.session.FailedAuthenticationException;
+import org.cms.client.framework.session.SessionConfig;
 
 public class LoginController implements Initializable {
 
@@ -31,10 +35,9 @@ public class LoginController implements Initializable {
 	private FXMLLoader mainViewLoader;
 	private Parent mainView;
 
-	private static final Session session = Session.getInstance();
 	private final ToggleGroup toggleGroup = new ToggleGroup();
 
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger logger = LogManager.getLogger(LoginController.class);
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,20 +52,37 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	public void loginOnAction(ActionEvent actionEvent) throws Exception {
-		initializeSession();
-		boolean authStatus = session.getRestClient().authenticate();
-		if (!authStatus) {
-			logger.error("Authentication failed");
-			// TODO: Coloring of text fields......validity
-			return;
+	public void loginOnAction(ActionEvent actionEvent) {
+		logger.info("Attempt to login to CMS Client Application");
+		ServiceConfig serviceConfig = createServiceConfig();
+		try {
+			Service.init(serviceConfig);
+			postInitUIUpdate();
+		} catch (FailedAuthenticationException e) {
+			// TODO : Update UI with red markers indicating error
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		logger.info("Auth success");
-
-		updateUIAfterSuccessfulLogin();
 	}
 
-	private void updateUIAfterSuccessfulLogin() {
+	private ServiceConfig createServiceConfig() {
+		ServiceConfig serviceConfig = new ServiceConfig();
+
+		RadioButton selectedRadio = (RadioButton) toggleGroup.getSelectedToggle();
+		SessionConfig sessionConfig = new SessionConfig(
+			selectedRadio.getText().toLowerCase(),
+			usernameField.getText(),
+			passwordField.getText(),
+			Config.get(Config.CMS_HOST)
+		);
+		serviceConfig.setSessionConfig(sessionConfig);
+
+		RootController rootController = mainViewLoader.getController();
+		serviceConfig.setAssignmentList(rootController.getAssignmentController().getAssignmentList());
+		return serviceConfig;
+	}
+
+	private void postInitUIUpdate() {
 		Stage mainStage = Globals.getStage();
 		mainStage.getScene().setRoot(mainView);
 		mainStage.setHeight(800);
@@ -70,17 +90,6 @@ public class LoginController implements Initializable {
 
 		RootController rootController = mainViewLoader.getController();
 		rootController.getHomeController().populateCoursesTable();
-	}
-
-	private String extractHostNameFromConfig() {
-		return Config.get(Config.CMS_HOST);
-	}
-
-	private void initializeSession() {
-		String hostName = extractHostNameFromConfig();
-		RadioButton selectedRadio = (RadioButton) toggleGroup.getSelectedToggle();
-		String userType = selectedRadio.getText().toLowerCase();
-		session.initialize(hostName, usernameField.getText(), passwordField.getText(), userType);
-		logger.info("Session initialized successfully");
+		rootController.getAssignmentController().populateAssignmentTable();
 	}
 }

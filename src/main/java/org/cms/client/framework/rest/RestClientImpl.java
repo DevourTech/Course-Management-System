@@ -12,13 +12,14 @@ import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cms.client.framework.globals.Constants;
 import org.cms.core.course.Course;
+import org.cms.core.files.assignment.Assignment;
 import org.cms.core.http.IdResponse;
 import org.cms.core.instructor.Instructor;
 import org.cms.core.student.Student;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /***
  * @
@@ -28,12 +29,12 @@ public class RestClientImpl implements RestClient {
 	private final HttpClient httpClient;
 	private final String hostName;
 	private final String userName;
-	private final String passWord;
+	private final String password;
 	private final String userType;
 
-	public static final Logger logger = LoggerFactory.getLogger(RestClientImpl.class);
+	public static final Logger logger = LogManager.getLogger(RestClientImpl.class);
 
-	public RestClientImpl(String hostName, String userName, String passWord, String userType) {
+	public RestClientImpl(String hostName, String userName, String password, String userType) {
 		httpClient =
 			HttpClient
 				.newBuilder()
@@ -41,14 +42,14 @@ public class RestClientImpl implements RestClient {
 					new Authenticator() {
 						@Override
 						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(userName, passWord.toCharArray());
+							return new PasswordAuthentication(userName, password.toCharArray());
 						}
 					}
 				)
 				.build();
 		this.hostName = hostName;
 		this.userName = userName;
-		this.passWord = passWord;
+		this.password = password;
 		this.userType = userType;
 	}
 
@@ -139,5 +140,25 @@ public class RestClientImpl implements RestClient {
 		HttpRequest request = HttpRequest.newBuilder().uri(new URI(hostName + path)).DELETE().build();
 
 		return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body);
+	}
+
+	@Override
+	public CompletableFuture<List<Assignment>> getAssignmentsWithCourses(List<String> courseIds) throws URISyntaxException {
+		StringBuilder builder = new StringBuilder();
+		String path = "/api/assignments/withCourses";
+
+		builder.append(hostName).append(path).append("?");
+		builder.append("c").append(1).append("=").append(courseIds.get(0));
+		for (int i = 1; i < courseIds.size(); i++) {
+			builder.append("&").append("c").append(i + 1).append("=").append(courseIds.get(i));
+		}
+
+		HttpRequest request = HttpRequest.newBuilder().uri(new URI(builder.toString())).GET().build();
+
+		return httpClient
+			.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+			.thenApply(HttpResponse::body)
+			.thenApply(s -> JsonIterator.deserialize(s, Assignment[].class))
+			.thenApply(Arrays::asList);
 	}
 }

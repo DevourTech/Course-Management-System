@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.cms.client.framework.globals.Constants;
 import org.cms.client.framework.globals.Globals;
+import org.cms.client.framework.service.Service;
 import org.cms.client.framework.session.Session;
 import org.cms.client.ui.UserDialog;
 import org.cms.core.http.IdResponse;
@@ -33,19 +34,19 @@ public class CreateUserController {
 		String sourceNodeId = userDialog.getSourceNode().getId();
 		System.out.println(sourceNodeId);
 
-		Session session = Session.getInstance();
+		Service service = Service.getInstance();
 		CompletableFuture<IdResponse> createUserResponse;
 
 		if (sourceNodeId.equalsIgnoreCase(Constants.CREATE_STUDENT_BY_ADMIN)) {
 			Student student = new Student();
 			student.setName(name);
 			student.setPassword(password);
-			createUserResponse = session.getRestClient().createStudent(student);
+			createUserResponse = service.getSession().getRestClient().createStudent(student);
 		} else {
 			Instructor instructor = new Instructor();
 			instructor.setName(name);
 			instructor.setPassword(password);
-			createUserResponse = session.getRestClient().createInstructor(instructor);
+			createUserResponse = service.getSession().getRestClient().createInstructor(instructor);
 		}
 		Globals.idResponse = createUserResponse.get();
 		userDialog.close();
