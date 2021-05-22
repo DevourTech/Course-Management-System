@@ -12,12 +12,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.cms.client.framework.service.Service;
 import org.cms.client.framework.session.Session;
 import org.cms.client.ui.CourseBooleanActionable;
 import org.cms.client.ui.UIHelper;
 import org.cms.core.course.Course;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CoursesViewController implements Initializable {
 
@@ -31,13 +32,13 @@ public class CoursesViewController implements Initializable {
 	public Label courseStatus;
 
 	private ObservableList<Course> courses;
-	private static final Session session = Session.getInstance();
-	private static final Logger logger = LoggerFactory.getLogger(CoursesViewController.class);
+	private static final Service service = Service.getInstance();
+	private static final Logger logger = LogManager.getLogger(CoursesViewController.class);
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		try {
-			CompletableFuture<List<Course>> futureCourseList = session.getRestClient().getAllCourses();
+			CompletableFuture<List<Course>> futureCourseList = service.getSession().getRestClient().getAllCourses();
 			List<Course> courseList = futureCourseList.get();
 			courses = FXCollections.observableArrayList(courseList);
 		} catch (Exception e) {
@@ -53,12 +54,16 @@ public class CoursesViewController implements Initializable {
 
 	private void bindDisablePropertyForSubscribeButton() {
 		ObservableList<Course> selectedRows = coursesTable.getSelectionModel().getSelectedItems();
-		subscribeButton.disableProperty().bind(booleanBindingForTableRowSelection(selectedRows, session::isCourseSubscribed));
+		subscribeButton
+			.disableProperty()
+			.bind(booleanBindingForTableRowSelection(selectedRows, service.getCourseHandler()::isCourseSubscribed));
 	}
 
 	private void bindDisablePropertyForUnsubscribeButton() {
 		ObservableList<Course> selectedRows = coursesTable.getSelectionModel().getSelectedItems();
-		unsubscribeButton.disableProperty().bind(booleanBindingForTableRowSelection(selectedRows, c -> !session.isCourseSubscribed(c)));
+		unsubscribeButton
+			.disableProperty()
+			.bind(booleanBindingForTableRowSelection(selectedRows, c -> !service.getCourseHandler().isCourseSubscribed(c)));
 	}
 
 	private BooleanBinding booleanBindingForTableRowSelection(
@@ -88,12 +93,15 @@ public class CoursesViewController implements Initializable {
 		ObservableList<Course> selectedRows = coursesTable.getSelectionModel().getSelectedItems();
 		Course courseTobeSubscribed = selectedRows.get(0);
 
-		CompletableFuture<String> future = session.getRestClient().subscribe(session.getUserId(), courseTobeSubscribed.getId());
+		CompletableFuture<String> future = service
+			.getSession()
+			.getRestClient()
+			.subscribe(service.getUserId(), courseTobeSubscribed.getId());
 		String response = future.get();
 		logger.info("Subscribe response - " + response);
 		courseStatus.setText(response);
 
-		session.addCourseToSubscribeList(courseTobeSubscribed);
+		service.getCourseHandler().addCourseToSubscribeList(courseTobeSubscribed);
 		coursesTable.getSelectionModel().clearSelection();
 	}
 
@@ -101,12 +109,15 @@ public class CoursesViewController implements Initializable {
 		ObservableList<Course> selectedRows = coursesTable.getSelectionModel().getSelectedItems();
 		Course courseTobeUnsubscribed = selectedRows.get(0);
 
-		CompletableFuture<String> future = session.getRestClient().unsubscribe(session.getUserId(), courseTobeUnsubscribed.getId());
+		CompletableFuture<String> future = service
+			.getSession()
+			.getRestClient()
+			.unsubscribe(service.getUserId(), courseTobeUnsubscribed.getId());
 		String response = future.get();
 		logger.info("Unsubscribe response - " + response);
 		courseStatus.setText(response);
 
-		session.removeCourseFromSubscribedList(courseTobeUnsubscribed);
+		service.getCourseHandler().removeCourseFromSubscribedList(courseTobeUnsubscribed);
 		coursesTable.getSelectionModel().clearSelection();
 	}
 }

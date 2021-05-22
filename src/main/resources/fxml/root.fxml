@@ -44,7 +44,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="BOOK" />
                </graphic>
             </Button>
-            <Button layoutX="10.0" layoutY="271.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Assignments" textFill="WHITE">
+            <Button layoutX="10.0" layoutY="271.0" mnemonicParsing="false" onAction="#assignmentOnAction" prefHeight="61.0" prefWidth="282.0" stylesheets="@../css/main.css" text="Assignments" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="COPY" />
                </graphic>

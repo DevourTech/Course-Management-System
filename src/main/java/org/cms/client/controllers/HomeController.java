@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import org.cms.client.framework.service.Service;
 import org.cms.client.framework.session.Session;
 import org.cms.client.ui.UIHelper;
 import org.cms.core.course.Course;
@@ -24,16 +25,16 @@ public class HomeController implements Initializable {
 	public TableColumn<Course, String> courseBranchColumn;
 	public TextField filterField;
 
-	Session session = Session.getInstance();
 	private ObservableList<Course> courses;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {}
 
 	public void populateCoursesTable() {
+		final Service service = Service.getInstance();
 		try {
 			// handler - consumes session created event
-			CompletableFuture<List<Course>> future = session.getRestClient().getCoursesForUser(session.getUserId());
+			CompletableFuture<List<Course>> future = service.getSession().getRestClient().getCoursesForUser(service.getUserId());
 			List<Course> list;
 			if (future == null) {
 				list = new ArrayList<>();
@@ -41,7 +42,8 @@ public class HomeController implements Initializable {
 				list = future.get();
 			}
 			courses = FXCollections.observableArrayList(list);
-			session.setSubscribedCourses(courses);
+			service.getCourseHandler().setSubscribedCourses(courses);
+			service.getCourseHandler().unlock();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
